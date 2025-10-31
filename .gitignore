@@ -47,3 +47,6 @@ build/
 ### Mac OS ###
 .DS_Store
 /TsumiFeign设计文档.md
+
+
+tsumi-feign-example
