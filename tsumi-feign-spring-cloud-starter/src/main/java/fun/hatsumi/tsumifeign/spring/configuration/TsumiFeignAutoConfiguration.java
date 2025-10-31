@@ -68,9 +68,9 @@ public class TsumiFeignAutoConfiguration {
                 .build();
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public FeignClient feignClient(OkHttpClient okHttpClient) {
+    @Bean(name = "okHttpFeignClient")
+    @ConditionalOnMissingBean(FeignClient.class)
+    public FeignClient okHttpFeignClient(OkHttpClient okHttpClient) {
         log.info("Creating OkHttpFeignClient");
         return new OkHttpFeignClient(okHttpClient);
     }

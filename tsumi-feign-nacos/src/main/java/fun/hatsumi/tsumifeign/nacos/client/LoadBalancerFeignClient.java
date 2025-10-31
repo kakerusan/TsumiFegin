@@ -8,7 +8,7 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 
 import java.io.IOException;
-import java.net.URI;
+import java.util.HashMap;
 
 /**
  * 支持负载均衡的 Feign 客户端
@@ -31,8 +31,9 @@ public class LoadBalancerFeignClient implements FeignClient {
     public Response execute(RequestTemplate requestTemplate) throws IOException {
         String url = requestTemplate.getUrl();
 
-        // 如果 URL 为空或不是服务名，直接使用原客户端
+        // 如果 URL 为空或已经是完整 URL，直接使用原客户端
         if (url == null || url.isEmpty() || url.startsWith("http://") || url.startsWith("https://")) {
+            log.debug("Bypassing load balancer for URL: {}", url);
             return delegate.execute(requestTemplate);
         }
 
@@ -45,18 +46,31 @@ public class LoadBalancerFeignClient implements FeignClient {
             ServiceInstance instance = loadBalancerClient.choose(serviceName);
 
             if (instance == null) {
+                log.error("No available instances for service: {}", serviceName);
                 throw new IOException("No available instances for service: " + serviceName);
             }
 
-            log.debug("Selected instance: {}:{} for service: {}",
+            log.info("Selected instance: {}:{} for service: {}",
                     instance.getHost(), instance.getPort(), serviceName);
 
             // 构建实际的 URL
             String actualUrl = String.format("http://%s:%d", instance.getHost(), instance.getPort());
-            requestTemplate.setUrl(actualUrl);
+            
+            // 创建新的 RequestTemplate 以避免修改原对象
+            RequestTemplate newTemplate = RequestTemplate.builder()
+                    .method(requestTemplate.getMethod())
+                    .url(actualUrl)
+                    .path(requestTemplate.getPath())
+                    .headers(requestTemplate.getHeaders() != null ? new HashMap<>(requestTemplate.getHeaders()) : new HashMap<>())
+                    .queryParams(requestTemplate.getQueryParams() != null ? new HashMap<>(requestTemplate.getQueryParams()) : new HashMap<>())
+                    .pathVariables(requestTemplate.getPathVariables() != null ? new HashMap<>(requestTemplate.getPathVariables()) : new HashMap<>())
+                    .body(requestTemplate.getBody())
+                    .build();
+
+            log.debug("Transformed URL from '{}' to '{}'" , serviceName, actualUrl);
 
             // 执行请求
-            return delegate.execute(requestTemplate);
+            return delegate.execute(newTemplate);
 
         } catch (Exception e) {
             log.error("Failed to execute request with load balancer for service: {}", serviceName, e);

@@ -1,8 +1,6 @@
 package fun.hatsumi.tsumifeign.sentinel.configuration;
 
 import com.alibaba.csp.sentinel.annotation.aspectj.SentinelResourceAspect;
-import fun.hatsumi.tsumifeign.client.FeignClient;
-import fun.hatsumi.tsumifeign.sentinel.client.SentinelFeignClient;
 import fun.hatsumi.tsumifeign.sentinel.fallback.DefaultFallbackFactory;
 import fun.hatsumi.tsumifeign.sentinel.fallback.FallbackFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration
 @ConditionalOnClass(SentinelResourceAspect.class)
-@ConditionalOnProperty(value = "tsumi.feign.sentinel.enabled", matchIfMissing = true)
+@ConditionalOnProperty(value = "spring.cloud.sentinel.enabled", havingValue = "true", matchIfMissing = false)
 @EnableConfigurationProperties(TsumiFeignSentinelProperties.class)
 public class TsumiFeignSentinelAutoConfiguration {
 
@@ -37,22 +35,5 @@ public class TsumiFeignSentinelAutoConfiguration {
     public FallbackFactory<?> defaultFallbackFactory() {
         log.info("Creating default FallbackFactory");
         return new DefaultFallbackFactory();
-    }
-
-    @Bean
-    @ConditionalOnProperty(value = "tsumi.feign.sentinel.enabled", matchIfMissing = true)
-    public FeignClient sentinelFeignClient(
-            FeignClient delegate,
-            FallbackFactory<?> fallbackFactory,
-            TsumiFeignSentinelProperties properties) {
-
-        log.info("Creating SentinelFeignClient with resource prefix: {}", 
-                properties.getResourcePrefix());
-
-        return new SentinelFeignClient(
-                delegate, 
-                fallbackFactory,
-                properties.getResourcePrefix()
-        );
     }
 }
