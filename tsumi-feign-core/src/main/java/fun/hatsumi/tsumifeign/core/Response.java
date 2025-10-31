@@ -1,6 +1,7 @@
 package fun.hatsumi.tsumifeign.core;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.Map;
  * @author Kakeru
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Response {
@@ -20,6 +22,11 @@ public class Response {
      * 响应状态码
      */
     private int status;
+
+    /**
+     * 响应原因
+     */
+    private String reason;
 
     /**
      * 响应头

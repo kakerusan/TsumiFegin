@@ -10,6 +10,35 @@
     </parent>
 
     <artifactId>tsumi-feign-sentinel</artifactId>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <!-- Spring Cloud Starter -->
+        <dependency>
+            <groupId>fun.hatsumi</groupId>
+            <artifactId>tsumi-feign-spring-cloud-starter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Sentinel Core -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
+
+        <!-- Spring Boot Starter -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
