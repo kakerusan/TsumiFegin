@@ -46,7 +46,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
-/TsumiFeign设计文档.md
+/doc/TsumiFeign设计文档.md
 
 
-/NACOS_INTEGRATION.md
+/doc/NACOS_INTEGRATION.md

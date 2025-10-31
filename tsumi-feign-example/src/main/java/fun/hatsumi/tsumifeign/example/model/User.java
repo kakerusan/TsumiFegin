@@ -1,18 +1,16 @@
-package fun.hatsumi.tsumifeign.example;
+package fun.hatsumi.tsumifeign.example.model;
 
-import fun.hatsumi.tsumifeign.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
- * 用户实体类示例
+ * 用户实体
  *
- * @author Kakeru
+ * @author hatsumi
  */
 @Data
 @Builder

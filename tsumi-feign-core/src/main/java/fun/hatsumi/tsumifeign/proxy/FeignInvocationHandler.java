@@ -20,7 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Feign 调用处理器
- * 使用 JDK 动态代理实现方法拦截
+ * 拦截和处理feign接口方法调用
+ * 将Java接口方法调用转化为实际的HTTP请求并执行
  *
  * @author hatsumi
  */
@@ -39,21 +40,50 @@ public class FeignInvocationHandler implements InvocationHandler {
      */
     private final Map<Method, MethodMetadata> metadataCache = new ConcurrentHashMap<>();
 
+    /**
+     * 默认构造函数，使用内置的实现
+     */
     public FeignInvocationHandler(Class<?> targetType) {
+        this(targetType, new OkHttpFeignClient(), new FastJsonEncoder(), 
+             new FastJsonDecoder(), new AnnotationContract());
+    }
+
+    /**
+     * 支持自定义依赖的构造函数
+     */
+    public FeignInvocationHandler(Class<?> targetType, 
+                                  FeignClient feignClient,
+                                  Encoder encoder,
+                                  Decoder decoder,
+                                  AnnotationContract contract) {
         this.targetType = targetType;
-        this.feignClient = new OkHttpFeignClient();
-        this.encoder = new FastJsonEncoder();
-        this.decoder = new FastJsonDecoder();
-        this.contract = new AnnotationContract();
+        this.feignClient = feignClient;
+        this.encoder = encoder;
+        this.decoder = decoder;
+        this.contract = contract;
 
         // 解析类注解获取 baseUrl
         TsumiFeignClient annotation = targetType.getAnnotation(TsumiFeignClient.class);
         if (annotation == null) {
             throw new IllegalArgumentException("Interface must have @TsumiFeignClient annotation");
         }
-        this.baseUrl = annotation.url();
+        
+        // 优先使用 name 作为服务名，如果没有则使用 url
+        String name = annotation.name();
+        if (name != null && !name.isEmpty()) {
+            this.baseUrl = name;
+        } else {
+            this.baseUrl = annotation.url();
+        }
     }
 
+    /**
+     * 通过 Proxy.newProxyInstance创建接口的动态代理实例
+     * 所有对接口方法的调用都会被 invoke 方法拦截
+     *
+     * @return 处理响应
+     * @throws Throwable 抛出的异常
+     */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         // 处理 Object 类的方法
@@ -103,15 +133,22 @@ public class FeignInvocationHandler implements InvocationHandler {
                 }
 
                 switch (param.getParamType()) {
+                    // 路径参数
                     case PATH:
                         template.addPathVariable(param.getName(), value);
                         break;
+
+                    // 查询参数
                     case QUERY:
                         template.addQueryParam(param.getName(), value);
                         break;
+
+                    // 请求头
                     case HEADER:
                         template.addHeader(param.getName(), String.valueOf(value));
                         break;
+
+                    // 请求体
                     case BODY:
                         // 使用编码器编码请求体
                         byte[] encodedBody = encoder.encode(value);

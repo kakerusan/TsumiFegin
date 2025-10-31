@@ -101,7 +101,9 @@ public class OkHttpFeignClient implements FeignClient {
 
         // 设置响应头
         Map<String, String> headers = new HashMap<>();
-        response.headers().forEach(pair -> headers.put(pair.getFirst(), pair.getSecond()));
+        response.headers()
+                .forEach(pair
+                        -> headers.put(pair.getFirst(), pair.getSecond()));
         feignResponse.setHeaders(headers);
 
         // 设置响应体

@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TsumiFeignClientFactory {
 
     /**
-     * 客户端实例缓存
+     * 客户端实例缓存：存储已创建的 Feign 客户端代理实例，避免重复创建
      */
     private static final Map<Class<?>, Object> CLIENT_CACHE = new ConcurrentHashMap<>();
 
@@ -26,10 +26,15 @@ public class TsumiFeignClientFactory {
      * 创建 Feign 客户端实例
      *
      * @param interfaceType 接口类型
-     * @param <T> 客户端类型
+     * @param <T>           客户端类型
      * @return 客户端实例
      */
     @SuppressWarnings("unchecked")
+    /*
+    这里需要使用强制类型转换 (T) 将 Object 类型转换为泛型 T，
+    但由于Java的类型擦除机制，编译器无法在运行时验证这个转换的安全性，
+    因此会产生"unchecked"警告。
+     */
     public static <T> T create(Class<T> interfaceType) {
         // 验证接口
         if (!interfaceType.isInterface()) {
