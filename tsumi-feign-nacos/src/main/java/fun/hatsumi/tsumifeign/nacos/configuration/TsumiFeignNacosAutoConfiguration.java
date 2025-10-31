@@ -6,6 +6,7 @@ import fun.hatsumi.tsumifeign.client.FeignClient;
 import fun.hatsumi.tsumifeign.nacos.client.LoadBalancerFeignClient;
 import fun.hatsumi.tsumifeign.nacos.loadbalancer.NacosServiceInstanceListSupplier;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -16,6 +17,8 @@ import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 
 /**
@@ -25,34 +28,16 @@ import org.springframework.core.env.Environment;
  */
 @Slf4j
 @Configuration
-@ConditionalOnClass({NacosDiscoveryProperties.class, NacosServiceManager.class})
-@ConditionalOnProperty(value = "spring.cloud.nacos.discovery.enabled", matchIfMissing = true)
-@AutoConfigureAfter(LoadBalancerClientConfiguration.class)
+@AutoConfigureAfter(name = "fun.hatsumi.tsumifeign.spring.configuration.TsumiFeignAutoConfiguration")
 public class TsumiFeignNacosAutoConfiguration {
 
-    @Bean
-    @ConditionalOnBean({NacosDiscoveryProperties.class, NacosServiceManager.class})
-    public ServiceInstanceListSupplier nacosServiceInstanceListSupplier(
-            ConfigurableApplicationContext context,
-            NacosDiscoveryProperties discoveryProperties,
-            NacosServiceManager nacosServiceManager) {
-
-        Environment environment = context.getEnvironment();
-        String serviceId = environment.getProperty("spring.application.name", "unknown");
-
-        log.info("Creating Nacos ServiceInstanceListSupplier for service: {}", serviceId);
-
-        return new NacosServiceInstanceListSupplier(
-                serviceId, discoveryProperties, nacosServiceManager);
-    }
-
-    @Bean
-    @ConditionalOnBean(LoadBalancerClient.class)
+    @Bean(name = "loadBalancerFeignClient")
+    @Primary
     public FeignClient loadBalancerFeignClient(
-            FeignClient delegate,
+            @Lazy @Qualifier("okHttpFeignClient") FeignClient delegate,
             LoadBalancerClient loadBalancerClient) {
 
-        log.info("Creating LoadBalancerFeignClient with Nacos integration");
+        log.info("=== Creating LoadBalancerFeignClient with Nacos integration ===");
 
         return new LoadBalancerFeignClient(delegate, loadBalancerClient);
     }

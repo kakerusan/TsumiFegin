@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-    <component name="Encoding">
-        <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8"/>
-        <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8"/>
-        <file url="file://$PROJECT_DIR$/tsumi-feign-core/src/main/java" charset="UTF-8"/>
-        <file url="file://$PROJECT_DIR$/tsumi-feign-core/src/main/resources" charset="UTF-8"/>
-        <file url="file://$PROJECT_DIR$/tsumi-feign-nacos/src/main/java" charset="UTF-8"/>
-        <file url="file://$PROJECT_DIR$/tsumi-feign-nacos/src/main/resources" charset="UTF-8"/>
-        <file url="file://$PROJECT_DIR$/tsumi-feign-sentinel/src/main/java" charset="UTF-8"/>
-        <file url="file://$PROJECT_DIR$/tsumi-feign-sentinel/src/main/resources" charset="UTF-8"/>
-        <file url="file://$PROJECT_DIR$/tsumi-feign-spring-cloud-starter/src/main/java" charset="UTF-8"/>
-        <file url="file://$PROJECT_DIR$/tsumi-feign-spring-cloud-starter/src/main/resources" charset="UTF-8"/>
-        <file url="file://$PROJECT_DIR$/tsumi-feign-spring-cloud/src/main/java" charset="UTF-8"/>
-        <file url="file://$PROJECT_DIR$/tsumi-feign-spring-cloud/src/main/resources" charset="UTF-8"/>
-        <file url="file://$PROJECT_DIR$/tsumi-feign-test/src/main/java" charset="UTF-8"/>
-    </component>
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tsumi-feign-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tsumi-feign-core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tsumi-feign-example/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tsumi-feign-example2/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tsumi-feign-nacos/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tsumi-feign-nacos/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tsumi-feign-sentinel/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tsumi-feign-sentinel/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tsumi-feign-spring-cloud-starter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tsumi-feign-spring-cloud-starter/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tsumi-feign-spring-cloud/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tsumi-feign-spring-cloud/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tsumi-feign-test/src/main/java" charset="UTF-8" />
+  </component>
 </project>
