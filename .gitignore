@@ -4,7 +4,7 @@ target/
 !**/src/test/**/target/
 .kotlin
 .doc/
-
+doc/
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
@@ -46,3 +46,4 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/TsumiFeign设计文档.md
