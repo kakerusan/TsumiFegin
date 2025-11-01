@@ -1,4 +1,4 @@
-target/
+ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -54,3 +54,5 @@ tsumi-feign-example2
 
 /doc/NACOS_INTEGRATION.md
 /tsumi-feign-example/测试验证指南.md
+TsumiFeign设计文档.md
+/tsumi-feign-core/target/
