@@ -68,10 +68,21 @@ public class TsumiFeignAutoConfiguration {
                 .build();
     }
 
-    @Bean(name = "okHttpFeignClient")
+    @Bean(name = "httpFeignClient")
+    @ConditionalOnMissingBean(name = "httpFeignClient")
+    public FeignClient httpFeignClient(OkHttpClient okHttpClient) {
+        log.info("Creating httpFeignClient (OkHttpFeignClient)");
+        return new OkHttpFeignClient(okHttpClient);
+    }
+
+    /**
+     * 默认的 FeignClient 实现，指向 httpFeignClient
+     * 当没有指定 clientType 时使用
+     */
+    @Bean
     @ConditionalOnMissingBean(FeignClient.class)
-    public FeignClient okHttpFeignClient(OkHttpClient okHttpClient) {
-        log.info("Creating OkHttpFeignClient");
+    public FeignClient defaultFeignClient(OkHttpClient okHttpClient) {
+        log.info("Creating default FeignClient (delegates to httpFeignClient)");
         return new OkHttpFeignClient(okHttpClient);
     }
 }

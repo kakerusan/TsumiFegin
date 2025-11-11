@@ -85,7 +85,8 @@ public class OkHttpFeignClient implements FeignClient {
         }
 
         if (body instanceof byte[]) {
-            String contentType = requestTemplate.getHeaders().getOrDefault("Content-Type", "application/json; charset=UTF-8");
+            String contentType = requestTemplate.getHeaders().getOrDefault
+                    ("Content-Type", "application/json; charset=UTF-8");
             return RequestBody.create((byte[]) body, MediaType.parse(contentType));
         }
 

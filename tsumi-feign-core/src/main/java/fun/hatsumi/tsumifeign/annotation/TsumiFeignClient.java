@@ -37,4 +37,10 @@ public @interface TsumiFeignClient {
      * 降级工厂类
      */
     Class<?> fallbackFactory() default void.class;
+
+    /**
+     * 客户端类型：http, triple, custom
+     * 默认为空字符串，表示使用全局配置
+     */
+    String clientType() default "";
 }

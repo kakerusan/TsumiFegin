@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Feign 调用处理器
  * 拦截和处理feign接口方法调用
- * 将Java接口方法调用转化为实际的HTTP请求并执行
+ * 将Java接口方法调用转化为实际的HTTP请求并执行········
  *
  * @author hatsumi
  */

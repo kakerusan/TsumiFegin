@@ -66,6 +66,12 @@ public class TsumiFeignProperties {
     @Data
     public static class ClientConfig {
         /**
+         * 客户端类型：http, triple, custom
+         * 默认为 http
+         */
+        private String defaultClientType = "http";
+
+        /**
          * 日志级别：NONE, BASIC, HEADERS, FULL
          */
         private String logLevel = "BASIC";
