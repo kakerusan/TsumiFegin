@@ -29,16 +29,15 @@ public class LoadBalancerFeignClient implements FeignClient {
 
     @Override
     public Response execute(RequestTemplate requestTemplate) throws IOException {
-        String url = requestTemplate.getUrl();
+        String serviceName = requestTemplate.getUrl();
 
         // 如果 URL 为空或已经是完整 URL，直接使用原客户端
-        if (url == null || url.isEmpty() || url.startsWith("http://") || url.startsWith("https://")) {
-            log.debug("Bypassing load balancer for URL: {}", url);
+        if (serviceName == null || serviceName.isEmpty() || serviceName.startsWith("http://") || serviceName.startsWith("https://")) {
+            log.debug("Bypassing load balancer for URL: {}", serviceName);
             return delegate.execute(requestTemplate);
         }
 
         // URL 是服务名，使用负载均衡
-        String serviceName = url;
         log.debug("Using load balancer for service: {}", serviceName);
 
         try {

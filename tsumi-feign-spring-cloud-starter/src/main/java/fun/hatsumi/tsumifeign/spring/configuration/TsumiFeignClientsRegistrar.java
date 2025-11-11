@@ -4,6 +4,7 @@ import fun.hatsumi.tsumifeign.annotation.TsumiFeignClient;
 import fun.hatsumi.tsumifeign.spring.annotation.EnableTsumiFeignClients;
 import fun.hatsumi.tsumifeign.spring.factory.TsumiFeignClientFactoryBean;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
@@ -22,7 +23,10 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * TsumiFeign 客户端注册器
@@ -38,17 +42,17 @@ public class TsumiFeignClientsRegistrar implements ImportBeanDefinitionRegistrar
     private Environment environment;
 
     @Override
-    public void setResourceLoader(ResourceLoader resourceLoader) {
+    public void setResourceLoader(@NotNull ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
 
     @Override
-    public void setEnvironment(Environment environment) {
+    public void setEnvironment(@NotNull Environment environment) {
         this.environment = environment;
     }
 
     @Override
-    public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
+    public void registerBeanDefinitions(AnnotationMetadata metadata, @NotNull BeanDefinitionRegistry registry) {
         // 获取 @EnableTsumiFeignClients 注解的属性
         Map<String, Object> attrs = metadata.getAnnotationAttributes(
                 EnableTsumiFeignClients.class.getName());
@@ -136,8 +140,8 @@ public class TsumiFeignClientsRegistrar implements ImportBeanDefinitionRegistrar
      * 注册客户端 Bean
      */
     private void registerClientBean(AnnotatedBeanDefinition beanDefinition,
-                                     AnnotationMetadata annotationMetadata,
-                                     BeanDefinitionRegistry registry) {
+                                    AnnotationMetadata annotationMetadata,
+                                    BeanDefinitionRegistry registry) {
         String className = annotationMetadata.getClassName();
         Map<String, Object> attributes = annotationMetadata.getAnnotationAttributes(
                 TsumiFeignClient.class.getName());

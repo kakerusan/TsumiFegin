@@ -34,11 +34,23 @@ public class TsumiFeignNacosAutoConfiguration {
     @Bean(name = "loadBalancerFeignClient")
     @Primary
     public FeignClient loadBalancerFeignClient(
-            @Lazy @Qualifier("okHttpFeignClient") FeignClient delegate,
+            @Lazy @Qualifier("httpFeignClient") FeignClient delegate,
             LoadBalancerClient loadBalancerClient) {
 
         log.info("=== Creating LoadBalancerFeignClient with Nacos integration ===");
 
+        return new LoadBalancerFeignClient(delegate, loadBalancerClient);
+    }
+
+    /**
+     * 为支持 clientType=\"nacos\" 注册别名
+     */
+    @Bean(name = "nacosFeignClient")
+    public FeignClient nacosFeignClient(
+            @Lazy @Qualifier("httpFeignClient") FeignClient delegate,
+            LoadBalancerClient loadBalancerClient) {
+
+        log.info("Creating nacosFeignClient (same as loadBalancerFeignClient)");
         return new LoadBalancerFeignClient(delegate, loadBalancerClient);
     }
 }

@@ -56,3 +56,5 @@ tsumi-feign-example2
 /tsumi-feign-example/测试验证指南.md
 TsumiFeign设计文档.md
 /tsumi-feign-core/target/
+/tsumi-feign-nacos/target/
+/tsumi-feign-sentinel/target/
