@@ -155,10 +155,12 @@ public class FeignInvocationHandler implements InvocationHandler {
                         template.setBody(encodedBody);
                         template.addHeader("Content-Type", encoder.getContentType());
                         break;
+
+                    default:
+                        break;
                 }
             }
         }
-
         return template;
     }
 

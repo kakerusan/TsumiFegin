@@ -70,6 +70,7 @@ public class TsumiFeignClientFactoryBean implements FactoryBean<Object>,
             
             // 获取注解中的 clientType
             TsumiFeignClient annotation = clientType.getAnnotation(TsumiFeignClient.class);
+            // 注解级 > 全局配置
             String annotationClientType = annotation != null ? annotation.clientType() : "";
             
             // 确定最终使用的 clientType：注解级 > 全局配置
@@ -151,6 +152,11 @@ public class TsumiFeignClientFactoryBean implements FactoryBean<Object>,
         }
     }
 
+    /**
+     * 返回 true 表示该工厂每次调用 getObject() 方法时都返回同一个实例（单例模式）
+     * 返回 false 表示每次调用 getObject() 方法都会创建一个新的实例（原型模式）
+     * @return
+     */
     @Override
     public boolean isSingleton() {
         return FactoryBean.super.isSingleton();
