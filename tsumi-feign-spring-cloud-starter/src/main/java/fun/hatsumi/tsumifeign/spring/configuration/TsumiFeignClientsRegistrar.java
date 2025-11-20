@@ -34,6 +34,9 @@ import java.util.Set;
  *
  * @author kakeru
  */
+/*
+ImportBeanDefinitionRegistrar
+ */
 @Slf4j
 public class TsumiFeignClientsRegistrar implements ImportBeanDefinitionRegistrar,
         ResourceLoaderAware, EnvironmentAware {
@@ -52,7 +55,8 @@ public class TsumiFeignClientsRegistrar implements ImportBeanDefinitionRegistrar
     }
 
     @Override
-    public void registerBeanDefinitions(AnnotationMetadata metadata, @NotNull BeanDefinitionRegistry registry) {
+    public void registerBeanDefinitions(AnnotationMetadata metadata,
+                                        @NotNull BeanDefinitionRegistry registry) {
         // 获取 @EnableTsumiFeignClients 注解的属性
         Map<String, Object> attrs = metadata.getAnnotationAttributes(
                 EnableTsumiFeignClients.class.getName());
@@ -108,18 +112,18 @@ public class TsumiFeignClientsRegistrar implements ImportBeanDefinitionRegistrar
      * 扫描并注册客户端
      */
     private void registerClients(Set<String> basePackages, BeanDefinitionRegistry registry) {
+        // 创建扫描器 Spring提供的
         ClassPathScanningCandidateComponentProvider scanner = getScanner();
         scanner.setResourceLoader(this.resourceLoader);
 
-        // 添加过滤器，只扫描带有 @TsumiFeignClient 注解的接口
+        // 添加过滤器，只扫描带有 @TsumiFeignClient 注解的所有人 不单单是接口
         scanner.addIncludeFilter(new AnnotationTypeFilter(TsumiFeignClient.class));
 
         for (String basePackage : basePackages) {
             Set<BeanDefinition> candidateComponents = scanner.findCandidateComponents(basePackage);
 
             for (BeanDefinition candidateComponent : candidateComponents) {
-                if (candidateComponent instanceof AnnotatedBeanDefinition) {
-                    AnnotatedBeanDefinition beanDefinition = (AnnotatedBeanDefinition) candidateComponent;
+                if (candidateComponent instanceof AnnotatedBeanDefinition beanDefinition) {
                     AnnotationMetadata annotationMetadata = beanDefinition.getMetadata();
 
                     // 验证是否为接口
@@ -142,6 +146,7 @@ public class TsumiFeignClientsRegistrar implements ImportBeanDefinitionRegistrar
     private void registerClientBean(AnnotatedBeanDefinition beanDefinition,
                                     AnnotationMetadata annotationMetadata,
                                     BeanDefinitionRegistry registry) {
+        // 获取属性
         String className = annotationMetadata.getClassName();
         Map<String, Object> attributes = annotationMetadata.getAnnotationAttributes(
                 TsumiFeignClient.class.getName());
@@ -155,7 +160,7 @@ public class TsumiFeignClientsRegistrar implements ImportBeanDefinitionRegistrar
 
         log.info("Registering TsumiFeign client: {} for interface: {}", beanName, className);
 
-        // 创建 FactoryBean 定义
+        // 创建 FactoryBean 定义   注入代理对象TsumiFeignClientFactoryBean 到 IOC 容器
         BeanDefinitionBuilder builder = BeanDefinitionBuilder
                 .genericBeanDefinition(TsumiFeignClientFactoryBean.class);
 
@@ -167,7 +172,6 @@ public class TsumiFeignClientsRegistrar implements ImportBeanDefinitionRegistrar
 
         AbstractBeanDefinition definition = builder.getBeanDefinition();
         definition.setPrimary(true);
-
         BeanDefinitionHolder holder = new BeanDefinitionHolder(definition, beanName);
         BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
     }
@@ -205,7 +209,7 @@ public class TsumiFeignClientsRegistrar implements ImportBeanDefinitionRegistrar
     private ClassPathScanningCandidateComponentProvider getScanner() {
         return new ClassPathScanningCandidateComponentProvider(false, this.environment) {
             @Override
-            protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
+            protected boolean isCandidateComponent(@NotNull AnnotatedBeanDefinition beanDefinition) {
                 // 只接受顶层接口
                 return beanDefinition.getMetadata().isIndependent()
                         && !beanDefinition.getMetadata().isAnnotation();
