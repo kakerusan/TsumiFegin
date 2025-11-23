@@ -6,11 +6,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="tsumi-feign-core" />
-        <module name="tsumi-feign-spring-cloud-starter" />
-        <module name="tsumi-feign-nacos" />
-        <module name="tsumi-feign-seata" />
-        <module name="tsumi-feign-sentinel" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
