@@ -1,24 +1,62 @@
-# Compiled class file
-*.class
+ target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+.kotlin
+.doc/
+doc/
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+.idea/gradle.xml
+*.iws
+*.iml
+*.ipr
 
-# Log file
-*.log
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
 
-# BlueJ files
-*.ctxt
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+tsumi-feign-example
+tsumi-feign-example2
 
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+
+### VS Code ###
+.vscode/
+
+### Gradle ###
+.gradle/
+
+### qoder ###
+.qoder/
+
+### Mac OS ###
+.DS_Store
+/doc/TsumiFeign设计文档.md
+
+
+/doc/NACOS_INTEGRATION.md
+/tsumi-feign-example/测试验证指南.md
+TsumiFeign设计文档.md
+/tsumi-feign-core/target/
+/tsumi-feign-nacos/target/
+/tsumi-feign-sentinel/target/
+/tsumi-feign-seata/target/
