@@ -47,7 +47,7 @@ public class TsumiFeignSentinelAutoConfiguration {
     @Bean(name = "sentinelFeignClient")
     @Primary
     public FeignClient sentinelFeignClient(
-            @Lazy  FeignClient delegate,
+            @Lazy @Qualifier("httpFeignClient") FeignClient delegate,
             FallbackFactory<?> fallbackFactory,
             TsumiFeignSentinelProperties properties) {
         

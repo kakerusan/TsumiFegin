@@ -71,7 +71,6 @@ public class TsumiFeignProperties {
          */
         private String defaultClientType = "http";
 
-
         /**
          * 日志级别：NONE, BASIC, HEADERS, FULL
          */

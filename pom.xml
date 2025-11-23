@@ -13,6 +13,7 @@
         <module>tsumi-feign-spring-cloud-starter</module>
         <module>tsumi-feign-nacos</module>
         <module>tsumi-feign-sentinel</module>
+        <module>tsumi-feign-seata</module>
     </modules>
 
     <properties>
@@ -22,6 +23,7 @@
         <spring.boot.version>3.2.0</spring.boot.version>
         <spring.cloud.version>2023.0.0</spring.cloud.version>
         <alibaba.cloud.version>2022.0.0.0</alibaba.cloud.version>
+        <seata.version>1.8.0</seata.version>
         <okhttp.version>4.12.0</okhttp.version>
         <fastjson2.version>2.0.60</fastjson2.version>
         <slf4j.version>2.0.9</slf4j.version>
@@ -55,6 +57,13 @@
                 <version>${alibaba.cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <!-- Seata -->
+            <dependency>
+                <groupId>io.seata</groupId>
+                <artifactId>seata-all</artifactId>
+                <version>${seata.version}</version>
             </dependency>
 
             <!-- OkHttp -->

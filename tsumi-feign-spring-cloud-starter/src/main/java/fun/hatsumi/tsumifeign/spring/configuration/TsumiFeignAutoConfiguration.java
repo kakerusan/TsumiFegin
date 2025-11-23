@@ -27,23 +27,13 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @EnableConfigurationProperties(TsumiFeignProperties.class)
 public class TsumiFeignAutoConfiguration {
-    /**
-     * 创建 Encoder
-     * 默认使用 FastJsonEncoder
-     * @return Encoder
-     */
+
     @Bean
     @ConditionalOnMissingBean
     public Encoder encoder() {
         log.info("Creating default FastJsonEncoder");
         return new FastJsonEncoder();
     }
-
-    /**
-     *  创建 Decoder
-     *   默认使用 FastJsonDecoder
-     * @return Decoder
-     */
 
     @Bean
     @ConditionalOnMissingBean
@@ -52,13 +42,6 @@ public class TsumiFeignAutoConfiguration {
         return new FastJsonDecoder();
     }
 
-    /**
-     *
-     * 创建 AnnotationContract
-     * AnnotationContract 是 Feign 的核心，用于解析注解
-     * @return AnnotationContract
-     */
-
     @Bean
     @ConditionalOnMissingBean
     public AnnotationContract annotationContract() {
@@ -66,23 +49,6 @@ public class TsumiFeignAutoConfiguration {
         return new AnnotationContract();
     }
 
-    /**
-     *  创建 OkHttpClient
-     *  默认使用 OkHttpClient
-     *  配置项：
-     *   - connectTimeout: 连接超时时间，默认 10 秒
-     *   - readTimeout: 读取超时，默认 10 秒
-     *   - writeTimeout: 写入超时，默认 10 秒
-     *   - connectionPool: 连接池配置
-     *   - maxIdleConnections: 最大空闲连接数，默认 5
-     *   - keepAliveDuration: 空闲连接保持时间，默认 5 分钟
-     *   - maxRequests: 最大请求数，默认 5
-     *   - maxRequestsPerHost: 每个主机的最大请求数，默认 5
-     *   - maxRequestsPerRoute: 每个路由的最大请求数，默认 5
-     *
-     * @param properties 配置项
-     * @return OkHttpClient
-     */
     @Bean
     @ConditionalOnMissingBean
     public OkHttpClient okHttpClient(TsumiFeignProperties properties) {
@@ -102,12 +68,6 @@ public class TsumiFeignAutoConfiguration {
                 .build();
     }
 
-    /**
-     *  创建 httpFeignClient
-     *  默认使用 OkHttpFeignClient
-     * @param okHttpClient OkHttpClient
-     * @return FeignClient
-     */
     @Bean(name = "httpFeignClient")
     @ConditionalOnMissingBean(name = "httpFeignClient")
     public FeignClient httpFeignClient(OkHttpClient okHttpClient) {
