@@ -9,7 +9,6 @@ import fun.hatsumi.tsumifeign.proxy.FeignInvocationHandler;
 import fun.hatsumi.tsumifeign.spring.configuration.TsumiFeignProperties;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -27,8 +26,7 @@ import java.lang.reflect.Proxy;
  */
 @Data
 @Slf4j
-public class TsumiFeignClientFactoryBean implements FactoryBean<Object>,
-        InitializingBean, ApplicationContextAware {
+public class TsumiFeignClientFactoryBean implements FactoryBean<Object>, InitializingBean, ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
@@ -67,31 +65,25 @@ public class TsumiFeignClientFactoryBean implements FactoryBean<Object>,
         if (target == null) {
             Class<?> clientType = Class.forName(type);
             log.info("Creating TsumiFeign client instance for: {}", clientType.getName());
-            
+
             // 获取注解中的 clientType
             TsumiFeignClient annotation = clientType.getAnnotation(TsumiFeignClient.class);
-            // 注解级 > 全局配置
             String annotationClientType = annotation != null ? annotation.clientType() : "";
-            
+
             // 确定最终使用的 clientType：注解级 > 全局配置
             String finalClientType = determineFinalClientType(annotationClientType);
             log.debug("Using client type: {} for interface: {}", finalClientType, clientType.getName());
-            
+
             // 从 Spring 容器获取对应的 FeignClient 实现
             FeignClient feignClient = resolveFeignClient(finalClientType);
             Encoder encoder = applicationContext.getBean(Encoder.class);
             Decoder decoder = applicationContext.getBean(Decoder.class);
             AnnotationContract contract = applicationContext.getBean(AnnotationContract.class);
-            
+
             // 创建动态代理
-            FeignInvocationHandler handler = new FeignInvocationHandler(
-                    clientType, feignClient, encoder, decoder, contract);
-            
-            target = Proxy.newProxyInstance(
-                    clientType.getClassLoader(),
-                    new Class<?>[]{clientType},
-                    handler
-            );
+            FeignInvocationHandler handler = new FeignInvocationHandler(clientType, feignClient, encoder, decoder, contract);
+
+            target = Proxy.newProxyInstance(clientType.getClassLoader(), new Class<?>[]{clientType}, handler);
         }
         return target;
     }
@@ -105,7 +97,7 @@ public class TsumiFeignClientFactoryBean implements FactoryBean<Object>,
         if (StringUtils.hasText(annotationClientType)) {
             return annotationClientType;
         }
-        
+
         // 否则使用全局配置
         try {
             TsumiFeignProperties properties = applicationContext.getBean(TsumiFeignProperties.class);
@@ -121,7 +113,7 @@ public class TsumiFeignClientFactoryBean implements FactoryBean<Object>,
      */
     private FeignClient resolveFeignClient(String clientType) {
         String beanName = clientType + "FeignClient";
-        
+
         try {
             // 尝试按名称获取具体的 FeignClient 实现
             FeignClient client = applicationContext.getBean(beanName, FeignClient.class);
@@ -129,15 +121,12 @@ public class TsumiFeignClientFactoryBean implements FactoryBean<Object>,
             return client;
         } catch (NoSuchBeanDefinitionException e) {
             log.warn("FeignClient bean '{}' not found, trying to get default FeignClient", beanName);
-            
+
             // 如果找不到具体的，尝试获取默认的
             try {
                 return applicationContext.getBean(FeignClient.class);
             } catch (NoSuchBeanDefinitionException ex) {
-                throw new IllegalStateException(
-                    String.format("No FeignClient implementation found for type '%s'. " +
-                        "Please ensure either '%s' bean or a default FeignClient bean is registered.",
-                        clientType, beanName), ex);
+                throw new IllegalStateException(String.format("No FeignClient implementation found for type '%s'. " + "Please ensure either '%s' bean or a default FeignClient bean is registered.", clientType, beanName), ex);
             }
         }
     }
@@ -152,11 +141,6 @@ public class TsumiFeignClientFactoryBean implements FactoryBean<Object>,
         }
     }
 
-    /**
-     * 返回 true 表示该工厂每次调用 getObject() 方法时都返回同一个实例（单例模式）
-     * 返回 false 表示每次调用 getObject() 方法都会创建一个新的实例（原型模式）
-     * @return
-     */
     @Override
     public boolean isSingleton() {
         return FactoryBean.super.isSingleton();
