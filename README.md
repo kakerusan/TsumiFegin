@@ -7,7 +7,8 @@
 
 > 🚀 一个轻量级、高性能的声明式 HTTP 客户端框架，深度集成 Spring Cloud 生态
 
-TsumiFeign 是一个现代化的 Feign 风格 RPC 框架，提供声明式 HTTP 调用能力，并与 Spring Cloud 生态无缝集成。支持 Nacos 服务发现、Sentinel 熔断降级、Seata 分布式事务等企业级特性。
+TsumiFeign 是一个现代化的 Feign 风格 RPC 框架，学生学习使用，提供声明式 HTTP 调用能力，并与 Spring Cloud 生态无缝集成。支持 Nacos 服务发现、Sentinel 熔断降级、Seata 分布式事务等企业级特性。
+
 
 ## ✨ 核心特性
 
@@ -21,13 +22,14 @@ TsumiFeign 是一个现代化的 Feign 风格 RPC 框架，提供声明式 HTTP 
 
 ## 📦 模块说明
 
-| 模块 | 说明 | 核心功能 |
-|------|------|---------|
-| `tsumi-feign-core` | 核心模块 | 注解、编码器、代理机制、HTTP 客户端 |
-| `tsumi-feign-spring-cloud-starter` | Spring 集成 | 自动装配、FactoryBean、扫描注册 |
-| `tsumi-feign-nacos` | Nacos 集成 | 服务发现、负载均衡 |
-| `tsumi-feign-sentinel` | Sentinel 集成 | 熔断降级、限流、Fallback 工厂 |
-| `tsumi-feign-seata` | Seata 集成 | 分布式事务、XID 传播、拦截器 |
+
+| 模块                               | 说明          | 核心功能                            |
+| ---------------------------------- | ------------- | ----------------------------------- |
+| `tsumi-feign-core`                 | 核心模块      | 注解、编码器、代理机制、HTTP 客户端 |
+| `tsumi-feign-spring-cloud-starter` | Spring 集成   | 自动装配、FactoryBean、扫描注册     |
+| `tsumi-feign-nacos`                | Nacos 集成    | 服务发现、负载均衡                  |
+| `tsumi-feign-sentinel`             | Sentinel 集成 | 熔断降级、限流、Fallback 工厂       |
+| `tsumi-feign-seata`                | Seata 集成    | 分布式事务、XID 传播、拦截器        |
 
 ## 🚀 快速开始
 
@@ -49,21 +51,21 @@ TsumiFeign 是一个现代化的 Feign 风格 RPC 框架，提供声明式 HTTP 
         <artifactId>tsumi-feign-spring-cloud-starter</artifactId>
         <version>1.0-SNAPSHOT</version>
     </dependency>
-    
+  
     <!-- Nacos 服务发现（可选） -->
     <dependency>
         <groupId>fun.hatsumi</groupId>
         <artifactId>tsumi-feign-nacos</artifactId>
         <version>1.0-SNAPSHOT</version>
     </dependency>
-    
+  
     <!-- Sentinel 熔断降级（可选） -->
     <dependency>
         <groupId>fun.hatsumi</groupId>
         <artifactId>tsumi-feign-sentinel</artifactId>
         <version>1.0-SNAPSHOT</version>
     </dependency>
-    
+  
     <!-- Seata 分布式事务（可选） -->
     <dependency>
         <groupId>fun.hatsumi</groupId>
@@ -80,16 +82,16 @@ import fun.hatsumi.tsumifeign.annotation.*;
 
 @TsumiFeignClient(name = "user-service", url = "http://localhost:8080")
 public interface UserFeignClient {
-    
+  
     @GetMapping("/api/users/{id}")
     User getUserById(@PathVariable("id") Long id);
-    
+  
     @PostMapping("/api/users")
     User createUser(@RequestBody User user);
-    
+  
     @PutMapping("/api/users/{id}")
     void updateUser(@PathVariable("id") Long id, @RequestBody User user);
-    
+  
     @DeleteMapping("/api/users/{id}")
     void deleteUser(@PathVariable("id") Long id);
 }
@@ -114,10 +116,10 @@ public class Application {
 ```java
 @Service
 public class UserService {
-    
+  
     @Autowired
     private UserFeignClient userFeignClient;
-    
+  
     public User getUser(Long id) {
         return userFeignClient.getUserById(id);
     }
@@ -181,7 +183,7 @@ tsumifeign:
 ```java
 @Component
 public class UserFallbackFactory implements FallbackFactory<User> {
-    
+  
     @Override
     public Response create(Throwable throwable) {
         return Response.builder()
@@ -227,10 +229,10 @@ tsumifeign:
 ```java
 @Service
 public class OrderService {
-    
+  
     @Autowired
     private AccountFeignClient accountFeignClient;
-    
+  
     @GlobalTransactional(
         name = "create-order",
         rollbackFor = Exception.class
@@ -238,7 +240,7 @@ public class OrderService {
     public void createOrder(OrderRequest request) {
         // 本地数据库操作
         orderMapper.insert(order);
-        
+      
         // 远程调用（自动传播事务 XID）
         accountFeignClient.deductBalance(request.getUserId(), request.getAmount());
     }
@@ -252,12 +254,12 @@ public class OrderService {
 ```java
 @Configuration
 public class FeignConfig {
-    
+  
     @Bean
     public Encoder protobufEncoder() {
         return new ProtobufEncoder();
     }
-    
+  
     @Bean
     public Decoder protobufDecoder() {
         return new ProtobufDecoder();
@@ -270,7 +272,7 @@ public class FeignConfig {
 ```java
 @Component
 public class AuthInterceptor implements RequestInterceptor {
-    
+  
     @Override
     public void apply(RequestTemplate template) {
         String token = SecurityContextHolder.getContext().getToken();
@@ -322,28 +324,6 @@ TsumiFeign 采用装饰器模式，各功能模块可灵活组合：
 - **熔断层**：`SentinelFeignClient` - 限流、熔断、降级
 - **事务层**：`SeataFeignClient` - 全局事务传播
 
-## 🧪 示例项目
-
-完整示例请参考：
-
-- [基础示例](examples/basic-example) - 简单的 HTTP 调用
-- [Nacos 示例](examples/nacos-example) - 服务发现与负载均衡
-- [Sentinel 示例](examples/sentinel-example) - 熔断降级
-- [Seata 示例](examples/seata-example) - 分布式事务
-
-## 📈 性能测试
-
-测试环境：
-- CPU: Intel i7-12700K
-- RAM: 32GB DDR4
-- JDK: 21
-- Spring Boot: 3.2.0
-
-| 并发数 | QPS | 平均响应时间 | P99 | 错误率 |
-|--------|-----|-------------|-----|--------|
-| 100 | 8,500 | 12ms | 25ms | 0% |
-| 500 | 12,000 | 42ms | 80ms | 0% |
-| 1000 | 15,000 | 67ms | 150ms | 0.1% |
 
 ## 🤝 贡献指南
 
@@ -359,7 +339,6 @@ TsumiFeign 采用装饰器模式，各功能模块可灵活组合：
 
 - 使用 Java 21 特性
 - 遵循 alibaba  代码风格
-- 单元测试覆盖率 > 80%
 - 所有 public API 必须有文档注释
 
 ## 📝 版本历史
@@ -385,8 +364,5 @@ TsumiFeign 采用装饰器模式，各功能模块可灵活组合：
 ## 📄 许可证
 
 本项目采用 [Apache License 2.0](LICENSE) 开源协议。
-
-
-
 
 ⭐ 如果这个项目对你有帮助，请给个 Star！
