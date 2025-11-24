@@ -3,10 +3,11 @@ package fun.hatsumi.tsumifeign.nacos.configuration;
 import com.alibaba.cloud.nacos.NacosDiscoveryProperties;
 import com.alibaba.cloud.nacos.NacosServiceManager;
 import fun.hatsumi.tsumifeign.nacos.loadbalancer.NacosServiceInstanceListSupplier;
+import fun.hatsumi.tsumifeign.nacos.loadbalancer.NacosWeightedLoadBalancer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.loadbalancer.core.ReactorLoadBalancer;
-import org.springframework.cloud.loadbalancer.core.RoundRobinLoadBalancer;
 import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import org.springframework.cloud.loadbalancer.support.LoadBalancerClientFactory;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -45,21 +46,30 @@ public class NacosLoadBalancerConfiguration {
     }
 
     /**
-     * 配置负载均衡器 - 使用轮询策略
-     * 可以替换为其他策略，如 RandomLoadBalancer
+     * 配置负载均衡器 - 使用支持权重和同集群优先的 Nacos 负载均衡器
      */
     @Bean
     public ReactorLoadBalancer<ServiceInstance> reactorLoadBalancer(
             Environment environment,
-            LoadBalancerClientFactory loadBalancerClientFactory) {
+            LoadBalancerClientFactory loadBalancerClientFactory,
+            TsumiFeignNacosProperties properties,
+            NacosDiscoveryProperties nacosDiscoveryProperties) {
 
         String serviceId = environment.getProperty(LoadBalancerClientFactory.PROPERTY_NAME);
 
-        log.info("Creating RoundRobinLoadBalancer for service: {}", serviceId);
+        log.info("Creating NacosWeightedLoadBalancer for service: {} with weightEnabled={}, sameClusterPriority={}",
+                serviceId, 
+                properties.getLoadBalancer().isWeightEnabled(),
+                properties.getLoadBalancer().isSameClusterPriority());
 
-        return new RoundRobinLoadBalancer(
-                loadBalancerClientFactory.getLazyProvider(serviceId, ServiceInstanceListSupplier.class),
-                serviceId
+        ObjectProvider<ServiceInstanceListSupplier> provider = 
+                loadBalancerClientFactory.getLazyProvider(serviceId, ServiceInstanceListSupplier.class);
+
+        return new NacosWeightedLoadBalancer(
+                serviceId,
+                provider,
+                properties,
+                nacosDiscoveryProperties
         );
     }
 }
