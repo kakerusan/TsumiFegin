@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-fun.hatsumi.tsumifeign.nacos.configuration.TsumiFeignNacosAutoConfiguration
+  fun.hatsumi.tsumifeign.nacos.configuration.TsumiFeignNacosAutoConfiguration

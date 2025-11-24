@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
-import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClientConfiguration;
+import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClients;
 import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -23,12 +23,14 @@ import org.springframework.core.env.Environment;
 
 /**
  * TsumiFeign Nacos 自动配置
+ * 为所有服务配置使用 Nacos 作为服务发现和负载均衡
  *
  * @author kakeru
  */
 @Slf4j
 @Configuration
 @AutoConfigureAfter(name = "fun.hatsumi.tsumifeign.spring.configuration.TsumiFeignAutoConfiguration")
+@LoadBalancerClients(defaultConfiguration = NacosLoadBalancerConfiguration.class)
 public class TsumiFeignNacosAutoConfiguration {
 
     @Bean(name = "loadBalancerFeignClient")

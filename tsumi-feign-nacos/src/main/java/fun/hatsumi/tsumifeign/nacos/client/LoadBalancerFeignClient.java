@@ -74,6 +74,5 @@ public class LoadBalancerFeignClient implements FeignClient {
         } catch (Exception e) {
             log.error("Failed to execute request with load balancer for service: {}", serviceName, e);
             throw new IOException("Load balancer execution failed: " + e.getMessage(), e);
-        }
-    }
+        }}
 }
