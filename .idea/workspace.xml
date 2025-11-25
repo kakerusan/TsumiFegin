@@ -4,17 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="99c25d43-e45f-4006-b37a-ce9ce857576f" name="更改" comment="添加负载均衡">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsumi-feign-nacos/src/main/java/fun/hatsumi/tsumifeign/nacos/configuration/NacosLoadBalancerConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/tsumi-feign-nacos/src/main/java/fun/hatsumi/tsumifeign/nacos/configuration/NacosLoadBalancerConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsumi-feign-nacos/src/main/java/fun/hatsumi/tsumifeign/nacos/configuration/TsumiFeignNacosAutoConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/tsumi-feign-nacos/src/main/java/fun/hatsumi/tsumifeign/nacos/configuration/TsumiFeignNacosAutoConfiguration.java" afterDir="false" />
-    </list>
+    <list default="true" id="99c25d43-e45f-4006-b37a-ce9ce857576f" name="更改" comment="添加负载均衡" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="dev-02" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -44,6 +57,8 @@
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"

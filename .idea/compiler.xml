@@ -2,10 +2,24 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="tsumi-feign-core" />
+        <module name="tsumi-feign-spring-cloud-starter" />
+        <module name="tsumi-feign-seata" />
+        <module name="tsumi-feign-sentinel" />
+      </profile>
+      <profile name="Annotation profile for tsumiFeign" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
+        </processorPath>
+        <module name="tsumi-feign-nacos" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

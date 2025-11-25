@@ -91,11 +91,7 @@ public class NacosServiceInstanceListSupplier implements ServiceInstanceListSupp
                     serviceId,
                     instance.getIp(),
                     instance.getPort(),
-<<<<<<< HEAD
                     false, // 是否为 HTTPS，分析 metadata 或设置为 false
-=======
-                    instance.isHealthy() && instance.isEnabled(),
->>>>>>> 48aee53d536c259b1b5ea51bb87824d7e602542b
                     instance.getMetadata()
             );
             serviceInstances.add(serviceInstance);

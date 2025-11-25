@@ -61,7 +61,7 @@ public class NacosWeightedLoadBalancer implements ReactorServiceInstanceLoadBala
         }
 
         return supplier.get(request).next()
-                .map(instances -> processInstanceResponse(instances));
+                .map(this::processInstanceResponse);
     }
 
     private Response<ServiceInstance> processInstanceResponse(List<ServiceInstance> instances) {
