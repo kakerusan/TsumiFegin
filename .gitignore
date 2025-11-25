@@ -10,7 +10,10 @@ doc/
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
+<<<<<<< HEAD
 .idea/gradle.xml
+=======
+>>>>>>> 48aee53d536c259b1b5ea51bb87824d7e602542b
 *.iws
 *.iml
 *.ipr

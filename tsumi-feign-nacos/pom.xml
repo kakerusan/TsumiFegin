@@ -44,6 +44,7 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
+<<<<<<< HEAD
 
         <!-- JUnit 5 -->
         <dependency>
@@ -63,6 +64,8 @@
             <artifactId>mockito-junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
+=======
+>>>>>>> 48aee53d536c259b1b5ea51bb87824d7e602542b
     </dependencies>
 
     <properties>
@@ -71,6 +74,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+<<<<<<< HEAD
     <build>
         <plugins>
             <plugin>
@@ -97,4 +101,6 @@
         </plugins>
     </build>
 
+=======
+>>>>>>> 48aee53d536c259b1b5ea51bb87824d7e602542b
 </project>
